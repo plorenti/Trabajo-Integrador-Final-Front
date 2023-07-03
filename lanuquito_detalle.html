@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Portal de Productos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .image-item {
+            display: inline-block;
+            margin-right: 10px;
+            text-align: center;
+        }
+
+        .image-item img {
+            max-width: 250px;
+            max-height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" href="index.html">Mi Sitio</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="materiales.html">Materiales</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contacto</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container mt-4">
+        <h1>Detalle de Lanuquito</h1>
+        <form>
+            <div class="alert alert-success" v-if="guardadoOK">
+                REGISTRO ACTUALIZADO
+            </div>
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" v-model="lanuquito.nombre">
+            </div>
+            <div class="form-group">
+                <label for="categoria">Categoría</label>
+                <select class="form-control" id="categoria.id" name="categoria.id" v-model="categorias_selecionada">
+                    <option v-for="categoria in categorias" :value="categoria.id" :key="categoria.id"  >{{categoria.nombre}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="precio">Precio</label>
+                <input type="number" class="form-control" id="precio" name="precio" :value="lanuquito.precio" v.model="precio">
+            </div>
+            <div class="form-group">
+                <label for="imagenes">Imágenes</label>
+                <ul id="imagenes" class="list-unstyled">
+                    <li v-for="imagen in imagenes" class="image-item">
+                        <img :src="'img/fotos/' + imagen.ruta">
+                        <div class="mt-2">
+                            <button type="button" class="btn btn-sm btn-primary">Modificar</button>
+                        </div>
+                        <div class="mt-2">
+                            <button type="button" class="btn btn-sm btn-danger">Eliminar</button>
+                        </div>
+                    </li>
+
+                    <!-- Puedes agregar más elementos <li> según sea necesario -->
+                </ul>
+                <button type="button" class="btn btn-primary mt-2" id="agregar-imagen">Agregar Imagen</button>
+            </div>
+            <div class="form-group">
+                <div class="alert alert-success" v-if="materialGuardadoOK">
+                    Materiales agregados
+                </div>
+                <h2>Materiales Necesarios</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="material in lanuquito.materiales">
+                            <td><span v-for="allMaterial in materiales_todos"><span v-if="material.id_material == allMaterial.id">{{allMaterial.material}}</span></span></td>
+                            <td>{{material.cantidad}}</td>
+                            <td>{{material.precio}}</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-primary">Editar</button>
+                                <button type="button" v-on:click="eliminarMaterial(material.id)" class="btn btn-sm btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+
+                        <!-- Puedes agregar más filas según sea necesario -->
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#agregar-material-modal">Agregar Material</button>
+            </div>
+            <button type="button" v-on:click="actualizar()" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+
+
+    <!-- Modal Agregar Material -->
+    
+    <div class="modal fade" id="agregar-material-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div  class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Material</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="material">Material</label>
+                            <select class="form-control" id="material" name="material" v-model="nuevoMaterial">
+                                <option v-for="new_material in materiales_todos" :value="new_material.id" >{{new_material.material}}</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cantidad">Cantidad</label>
+                            <input type="number" class="form-control" id="cantidad" name="cantidad" v-model="nuevoMaterialCantidad">
+                        </div>
+                        <div class="form-group">
+                            <label for="precio-material">Precio</label>
+                            <input type="number" class="form-control" id="precio-material" name="precio-material" v-model="nuevoMaterialPrecio">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" v-on:click="agregarMaterialLanuquito()" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#agregar-imagen').click(function() {
+                var html = '<li><input type="file" name="imagen"></li>';
+                $('#imagenes').append(html);
+            });
+        });
+    </script>
+       <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./js/lanuquitos_edit.js"></script>
+   <!--  <script src="./js/materialesLanuquito_edit.js"></script> -->
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Listado de Materiales</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 800px;
+        }
+
+        .form-container {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand" href="index.html">Mi Sitio</a>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Materiales</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contacto</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="container mt-4">
+            <h1>Listado de Materiales</h1>
+
+            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#agregarMaterialModal">Nuevo Material</button>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Material</th>
+                        <th>Precio</th>
+                        <th>Proveedor</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="material in materiales">
+                        <td>{{material.material}}</td>
+                        <td>{{material.precio}}</td>
+                        <td>{{material.proveedor}}</td>
+                        <td>
+                            <button type="button" v-on:click="editarMaterial(material.id)" class="btn btn-sm btn-primary">Editar</button>
+                            <button type="button" v-on:click="eliminarMaterial(material.id)" class="btn btn-sm btn-danger">Eliminar</button>
+                        </td>
+                    </tr>
+
+                    <!-- Puedes agregar más filas según sea necesario -->
+                </tbody>
+            </table>
+        
+
+        <!-- Modal Agregar Material -->
+        <div class="modal fade" id="agregarMaterialModal" tabindex="-1" role="dialog" aria-labelledby="agregarMaterialModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="agregarMaterialModalLabel">Agregar/Editar Material</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="material">Material</label>
+                                <input type="text" class="form-control" id="material" name="material" v-model="nuevoMaterial">
+                            </div>
+                            <div class="form-group">
+                                <label for="precio">Precio</label>
+                                <input type="number" class="form-control" id="precio" name="precio" v-model="nuevoPrecio">
+                            </div>
+                            <div class="form-group">
+                                <label for="proveedor">Proveedor</label>
+                                <input type="text" class="form-control" id="proveedor" name="proveedor" v-model="nuevoProveedor">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" v-on:click="GuardarMaterial()" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>  
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./js/materiales.js"></script>
+</body>
+</html>
+    
