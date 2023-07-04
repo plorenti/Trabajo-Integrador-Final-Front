@@ -17,6 +17,7 @@ createApp({
             nuevoProveedor:"",
             edit:false,
             materialEdit_id:0,
+            buscar:"",
 
         };
 
@@ -117,7 +118,24 @@ createApp({
             .then(()=>{
                 location.reload()
             });
-          }
+          },
+          busqueda(){
+            if(this.buscar ===""){
+              this.fetchData(this.url);
+            }else{
+              this.materiales = this.materiales.filter(item => {
+                const material = item.material.toLowerCase();
+                const textoBusqueda = this.buscar.toLowerCase();
+
+                return material.includes(textoBusqueda)
+              });
+            }
+          },
+    },
+    watch:{
+      buscar(newVal){
+        this.busqueda()
+      }
     },
     created() {
         this.fetchData(this.url);
