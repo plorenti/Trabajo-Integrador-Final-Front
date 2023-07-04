@@ -14,6 +14,27 @@
             max-width: 250px;
             max-height: 300px;
         }
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .image-modal-item {
+            position: relative;
+            width: 100%;
+            padding-bottom: 100%;
+        }
+
+        .image-modal-item img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
@@ -28,7 +49,7 @@
                 <a class="nav-link" href="materiales.html">Materiales</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Contacto</a>
+                <a class="nav-link" href="imagenes.html">Imagenes</a>
             </li>
         </ul>
     </nav>
@@ -57,9 +78,7 @@
                 <ul id="imagenes" class="list-unstyled">
                     <li v-for="imagen in imagenes" class="image-item">
                         <img :src="'img/fotos/' + imagen.ruta">
-                        <div class="mt-2">
-                            <button type="button" class="btn btn-sm btn-primary">Modificar</button>
-                        </div>
+                        
                         <div class="mt-2">
                             <button type="button" class="btn btn-sm btn-danger">Eliminar</button>
                         </div>
@@ -67,7 +86,7 @@
 
                     <!-- Puedes agregar más elementos <li> según sea necesario -->
                 </ul>
-                <button type="button" class="btn btn-primary mt-2" id="agregar-imagen">Agregar Imagen</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#agregar-imagen-modal">Agregar imagen</button>
             </div>
             <div class="form-group">
                 <div class="alert alert-success" v-if="materialGuardadoOK">
@@ -103,7 +122,27 @@
         </form>
     </div>
 
-
+  <!-- Código del modal -->
+    <div id="agregar-imagen-modal" class="modal fade" tabindex="-2" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Seleccionar Imagen</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="image-gallery">
+            <div class="image-modal-item" v-for="image in all_imagenes" :key="image.id"   v-on:click="seleccionarImagen(image)">
+              <img :src="'img/fotos/' + image.ruta" alt="Imagen"  />
+            </div> 
+          </div>
+        </div>
+     </div>
+    </div>
+  </div>
+  
     <!-- Modal Agregar Material -->
     
     <div class="modal fade" id="agregar-material-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -142,17 +181,11 @@
         </div>
     </div>
 </div>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#agregar-imagen').click(function() {
-                var html = '<li><input type="file" name="imagen"></li>';
-                $('#imagenes').append(html);
-            });
-        });
-    </script>
+
        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="./js/lanuquitos_edit.js"></script>
    <!--  <script src="./js/materialesLanuquito_edit.js"></script> -->

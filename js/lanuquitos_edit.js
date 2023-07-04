@@ -8,6 +8,7 @@ createApp({
             url_categorias:"https://plorenti.pythonanywhere.com/categorias",
             url_materiales:"https://plorenti.pythonanywhere.com/materiales",
             url_materialLanuquito:"https://plorenti.pythonanywhere.com/materiales_lanuquitos",
+            url_imagenes:"https://plorenti.pythonanywhere.com/imagenes",
             lanuquito:[],
             categorias:[],
             id:0,
@@ -25,12 +26,15 @@ createApp({
             categorias_selecionada:null,
             guardadoOK:false,
             materialGuardadoOK:false,
-           
+            all_imagenes:[],
+            id_imagenSeleccionada:0,
+            new_imagenes:[],
+
 
         };
     },
     methods:{
-        fetchData(url, url_categorias, url_materiales) {
+        fetchData(url, url_categorias, url_materiales,url_imagenes) {
 
             fetch(url)
               .then((response) => response.json())
@@ -40,6 +44,7 @@ createApp({
                 this.imagenes = this.lanuquito.imagenes;
                 this.materialesLanuquitos=this.lanuquito.materiales;
                 this.materiales=this.lanuquito.materiales_todos;
+                this.all_imagenes=this.lanuquito.all_imagenes;
 
               })
               .catch((err) => {
@@ -51,6 +56,17 @@ createApp({
                .then((response) => response.json())
                .then((data) => {
                  this.categorias = data;
+                
+               })
+               .catch((err) => {
+                 console.error(err);
+                 this.error = true;
+               });
+              //CARGO IMAGENES
+               fetch(url_imagenes)
+               .then((response) => response.json())
+               .then((data) => {
+                 this.all_imagenes = data;
                 
                })
                .catch((err) => {
@@ -70,6 +86,12 @@ createApp({
                  this.error = true;
                });
              
+            },
+            seleccionarImagen(id){
+              console.log(this.imagenes)
+              console.log("AGREGO")
+              this.imagenes.push(id)
+              console.log(this.imagenes)
             },
             agregarMaterialLanuquito(){
                 let material = {
@@ -176,7 +198,7 @@ createApp({
           },        
   created() {
 
-    this.fetchData(this.url, this.url_categorias,this.url_materiales);
+    this.fetchData(this.url, this.url_categorias,this.url_materiales, this.url_imagenes);
    
   },
 
