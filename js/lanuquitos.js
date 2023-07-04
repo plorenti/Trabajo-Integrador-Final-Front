@@ -16,6 +16,7 @@ createApp({
             categoria:0,
             id_categoria:0,
             nuevaCategoria:"",
+            buscar:"",
         };
 
     },
@@ -42,7 +43,17 @@ createApp({
                 console.error(err);
                 this.error = true;
               });
-          },
+          }, eliminarLanuquito(id_lanuquito){
+            console.log(id_lanuquito)
+
+            var opciones ={
+                method:"DELETE",
+            }
+            fetch(this.url+"/"+id_lanuquito, opciones)
+            .then(()=>{
+                location.reload()
+            });
+        },
           guardar(){
             //Crear objeto y capturar datos
             let lanuquito ={
@@ -99,6 +110,24 @@ createApp({
               alert("Error al Grabar.");
             });
           },
+          busqueda(){
+            if(this.buscar ===""){
+              this.fetchData(this.url, this.url_categorias);
+            }else{
+              this.lanuquitos = this.lanuquitos.filter(lanuquito =>{
+                const nombre = lanuquito.nombre.toLowerCase();
+                const textoBusqueda = this.buscar.toLowerCase();
+
+                return nombre.includes(textoBusqueda)
+              });
+            }
+          },
+          
+    },
+    watch:{
+        buscar(newVal){
+          this.busqueda()
+        }
     },
     created() {
         this.fetchData(this.url,this.url_categorias);
