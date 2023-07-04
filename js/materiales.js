@@ -18,6 +18,7 @@ createApp({
             edit:false,
             materialEdit_id:0,
             buscar:"",
+            material_delete:0,
 
         };
 
@@ -110,11 +111,14 @@ createApp({
                 }
             });
           },
-          eliminarMaterial(id_material){
+          set_id_material_eliminar(id){
+            this.material_delete = id;
+          },
+          eliminarMaterial(){
             var opciones ={
                 method:"DELETE",
             }
-            fetch(this.url+"/"+id_material, opciones)
+            fetch(this.url+"/"+this.material_delete, opciones)
             .then(()=>{
                 location.reload()
             });

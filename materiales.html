@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Listado de Materiales</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
@@ -60,7 +61,7 @@
                         <td>{{material.proveedor}}</td>
                         <td>
                             <button type="button" v-on:click="editarMaterial(material.id)" class="btn btn-sm btn-primary">Editar</button>
-                            <button type="button" v-on:click="eliminarMaterial(material.id)" class="btn btn-sm btn-danger">Eliminar</button>
+                            <button type="button" data-toggle="modal" v-on:click="set_id_material_eliminar(material.id)" data-target="#confirmarEliminarModal" class="btn btn-sm btn-danger">Eliminar</button>
                         </td>
                     </tr>
 
@@ -103,6 +104,27 @@
             </div>
         </div>
 
+    </div>
+     <!-- Modal de confirmación de eliminación -->
+     <div class="modal fade" id="confirmarEliminarModal" tabindex="-1" role="dialog" aria-labelledby="confirmarEliminarModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmarEliminarModalLabel">Confirmar eliminación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar este material?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" v-on:click="eliminarMaterial()">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </div>  
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

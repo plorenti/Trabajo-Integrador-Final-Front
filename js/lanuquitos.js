@@ -17,6 +17,7 @@ createApp({
             id_categoria:0,
             nuevaCategoria:"",
             buscar:"",
+            id_lanuquito_eliminar:0,
         };
 
     },
@@ -43,13 +44,16 @@ createApp({
                 console.error(err);
                 this.error = true;
               });
-          }, eliminarLanuquito(id_lanuquito){
-            console.log(id_lanuquito)
-
+          },
+          set_id_lanuquito_eliminar(id){
+            this.id_lanuquito_eliminar=id;
+          },
+          eliminarLanuquito(){
+            
             var opciones ={
                 method:"DELETE",
             }
-            fetch(this.url+"/"+id_lanuquito, opciones)
+            fetch(this.url+"/"+this.id_lanuquito_eliminar, opciones)
             .then(()=>{
                 location.reload()
             });
